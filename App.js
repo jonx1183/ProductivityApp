@@ -3,12 +3,16 @@ import { collection, addDoc } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
+import { useCollection } from 'react-firebase-hooks/firestore';
+
 
 export default function App() {
 
   const[text, setText] = useState('')
   const[notes, setNotes] = useState([])
   const [editObj, setEditObj] = useState(null)
+  const [values, loading, error] = useCollection(collection(database, "notes"))
+  const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
 
 
   async function buttenHandler(){
@@ -32,8 +36,8 @@ export default function App() {
       <TextInput style={styles.TextInput} onChangeText={(txt) => setText(txt)}/>
       <Button title='Save note' onPress={buttenHandler}></Button>
       <FlatList
-        data={notes}
-        renderItem={(note) => <Text>{note.item.name}</Text>}
+        data={data}
+        renderItem={(note) => <Text>{note.item.text}</Text>}
       />
 
   
