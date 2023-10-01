@@ -1,12 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
 
 export default function App() {
+
+  const[text, setText] = useState('')
+  const[notes, setNotes] = useState([])
+  const [editObj, setEditObj] = useState(null)
+
+
+  function buttenHandler(){
+    setNotes(
+      [...notes, {key:notes.length, name:text}]
+    )
+}
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <TextInput style={styles.TextInput} onChangeText={(txt) => setText(txt)}/>
+      <Button title='testButton' onPress={buttenHandler}></Button>
+      <FlatList
+        data={notes}
+        renderItem={(note) => <Text>{note.item.name}</Text>}
+      />
+
+  
+    
+    <StatusBar style="auto" />
+  </View>
   );
 }
 
@@ -16,5 +36,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 120
   },
+  TextInput:{
+    backgroundColor: 'lightblue',
+    minWidth: 200
+  }
 });
