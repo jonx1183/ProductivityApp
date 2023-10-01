@@ -10,17 +10,27 @@ export default function App() {
   const[notes, setNotes] = useState([])
   const [editObj, setEditObj] = useState(null)
 
-  alert(JSON.stringify(database, null, 4))
 
-  function buttenHandler(){
-    setNotes(
-      [...notes, {key:notes.length, name:text}]
-    )
-}
+  async function buttenHandler(){
+    
+
+    try{
+    await addDoc(collection(database, "notes"), {
+      text: text
+
+    })
+
+    } catch(error){
+      console.log("Fejl i db" + error);
+
+    } 
+  }
+
+
   return (
     <View style={styles.container}>
       <TextInput style={styles.TextInput} onChangeText={(txt) => setText(txt)}/>
-      <Button title='testButton' onPress={buttenHandler}></Button>
+      <Button title='Save note' onPress={buttenHandler}></Button>
       <FlatList
         data={notes}
         renderItem={(note) => <Text>{note.item.name}</Text>}
