@@ -55,8 +55,8 @@ export default function App() {
 
       { editObj &&
        <View>
-        <TextInput defaultValue={editObj.text} onChangeText={(txt) => setText(txt)}/>
-        <Text onPress={saveUpdate}>Save</Text>
+        <TextInput style={styles.TextInput} defaultValue={editObj.text} onChangeText={(txt) => setText(txt)}/>
+        <Text style ={styles.Text2} onPress={saveUpdate}>Save</Text>
        </View>
       }
 
@@ -91,12 +91,13 @@ const styles = StyleSheet.create({
   },
   TextInput:{
     backgroundColor: 'lightblue',
-    minWidth: 200
+    minWidth: 200,
   },
   Text:{
-    color: 'red'
+    color: 'red',
   },
   Text2:{
-    color: 'blue'
+    color: 'blue',
+
   }
 });
