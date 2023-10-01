@@ -1,3 +1,5 @@
+import { app, database } from './firebase';
+import { collection, addDoc } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
@@ -8,6 +10,7 @@ export default function App() {
   const[notes, setNotes] = useState([])
   const [editObj, setEditObj] = useState(null)
 
+  alert(JSON.stringify(database, null, 4))
 
   function buttenHandler(){
     setNotes(
