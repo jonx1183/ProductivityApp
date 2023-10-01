@@ -1,5 +1,5 @@
 import { app, database } from './firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
@@ -30,14 +30,48 @@ export default function App() {
     } 
   }
 
+  async function deleteNote(id){
+    await deleteDoc(doc(database, "notes", id))
+    
+  }
+
+  function veiwUpdateDialog(item){
+    setEditObj(item)
+
+  }
+
+  async function saveUpdate(){
+    await updateDoc(doc(database, "notes", editObj.id),{
+      text: text
+    })
+    setText("")
+    setEditObj(null)
+
+  }
+
 
   return (
     <View style={styles.container}>
+
+      { editObj &&
+       <View>
+        <TextInput defaultValue={editObj.text} onChangeText={(txt) => setText(txt)}/>
+        <Text onPress={saveUpdate}>Save</Text>
+       </View>
+      }
+
+
       <TextInput style={styles.TextInput} onChangeText={(txt) => setText(txt)}/>
       <Button title='Save note' onPress={buttenHandler}></Button>
       <FlatList
         data={data}
-        renderItem={(note) => <Text>{note.item.text}</Text>}
+        renderItem={(note) => 
+        <View>
+         <Text>{note.item.text}</Text>
+         <Text style ={styles.Text} onPress={() => deleteNote(note.item.id)}>Delete</Text>
+         <Text style ={styles.Text2} onPress={() => veiwUpdateDialog(note.item)}>Update</Text>
+        </View>
+      }
       />
 
   
@@ -58,5 +92,11 @@ const styles = StyleSheet.create({
   TextInput:{
     backgroundColor: 'lightblue',
     minWidth: 200
+  },
+  Text:{
+    color: 'red'
+  },
+  Text2:{
+    color: 'blue'
   }
 });
